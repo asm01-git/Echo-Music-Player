@@ -1,0 +1,25 @@
+<RelativeLayout android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:id="@+id/about_us_layout"
+    android:background="#ffffff">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/pic"
+        android:id="@+id/dev_image"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@+id/dev_image"
+        android:text="My name is Aadil Salim.I am currently a B.Tech Student in IIT Hyderabad and
+ am very interested in Android App Development.This is the first app I have ever developed as a part of
+ an online course from Internshala.This app has one or two bugs which I will try to solve ASAP.\n
+But Till then, enjoy listening to some music!\nPS:Hoping to design more cool apps like these!"
+        android:textColor="#000000"
+        android:textSize="15sp"/>
+</RelativeLayout>
