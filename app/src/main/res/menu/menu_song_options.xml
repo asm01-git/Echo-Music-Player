@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/play_next"
+        android:title="Play Next"
+        android:orderInCategory="1"/>
+    <item
+        android:id="@+id/add_to_queue"
+        android:title="Add to Queue"
+        android:orderInCategory="2"/>
+    <item
+        android:id="@+id/add_to_playlist"
+        android:title="Add to Playlist"
+        android:orderInCategory="3"/>
+    <item
+        android:id="@+id/delete_playlist"
+        android:orderInCategory="3"
+        android:title="Delete Playlist"
+        android:visible="false" />
+    <item
+        android:id="@+id/song_delete_from_playlist"
+        android:orderInCategory="3"
+        android:title="Delete From Playlist"
+        android:visible="false" />
+</menu>
