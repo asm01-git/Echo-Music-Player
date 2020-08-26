@@ -72,8 +72,7 @@ class MainScreenAdapter (_songsList:ArrayList<Song>, _context: Context,fromFavou
                         }
                     }
                     R.id.add_to_queue -> {
-                        songQueue?.add(songObj as Song)
-                        makeToast("Song added to queue!", context)
+                       addSongToQueue(songObj as Song)
                     }
                     R.id.add_to_playlist -> {
                         try {
@@ -131,8 +130,7 @@ class MainScreenAdapter (_songsList:ArrayList<Song>, _context: Context,fromFavou
                     .commit()
             }
             else {
-                MainActivity.Statified.songQueue?.add(songObj as Song)
-                makeToast("Song added to Queue!",context)
+                addSongToQueue(songObj as Song)
             }
         }
     }
@@ -171,7 +169,14 @@ class MainScreenAdapter (_songsList:ArrayList<Song>, _context: Context,fromFavou
         }
 
     }
-
+    fun addSongToQueue(songObj:Song){
+        if(!MainActivity.Statified.songQueue!!.contains(songObj as Song)) {
+            MainActivity.Statified.songQueue?.add(songObj as Song)
+            makeToast("Song added to Queue!", context)
+        }
+        else
+            makeToast("This song is already in the queue!",context)
+    }
         fun showPlaylists(context:Context?,song:Song) {
             val list = EchoDatabase.s.playLists
             val playLists =

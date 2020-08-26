@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.internshala.echo.R
 import com.internshala.echo.Song
 import com.internshala.echo.adapters.NavigationDrawerAdapter
+import com.internshala.echo.databases.EchoDatabase
 import com.internshala.echo.fragments.MainScreenFragment
 import com.internshala.echo.fragments.PlayingSongsFragment
 import java.lang.Exception
@@ -34,12 +35,23 @@ class MainActivity : AppCompatActivity() {
         var drawerLayout: DrawerLayout? = null
         var notificationManager:NotificationManager?=null
         var songQueue:ArrayList<Song>?=null
+        var favDatabase: EchoDatabase?=null
     }
     var trackNotificationBuilder:Notification?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        //Initialising song queue
         Statified.songQueue=ArrayList()
+        //Now instantiate favorites Database
+        Statified.favDatabase= EchoDatabase(this)
+        /*createPlaylistsTable() should be called only once: at the first instance when it is called
+         *The list of playList names EchoDatabase.s.playlists should be changed only when
+         * A new playlist is created only in EchoDatabase.createPlaylist()
+         *THis prevents any duplicate entries
+         */
+        Statified.favDatabase!!.createPlaylistsTable()
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         Statified.drawerLayout = findViewById(R.id.drawer_layout)

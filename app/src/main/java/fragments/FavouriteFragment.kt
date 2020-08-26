@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.internshala.echo.R
 import com.internshala.echo.Song
+import com.internshala.echo.activities.MainActivity.Statified as StaticMainActivity
 import com.internshala.echo.adapters.FavouriteAdapter
 import com.internshala.echo.adapters.MainScreenAdapter
 import com.internshala.echo.databases.EchoDatabase
@@ -75,15 +76,8 @@ class FavouriteFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        favoriteContent= EchoDatabase(myActivity)
-        /*createPlaylistsTable() should be called only once: at the first instance when it is called
-         *The list of playList names EchoDatabase.s.playlists should be changed only when
-         * A new playlist is created only in EchoDatabase.createPlaylist()
-         *THis prevents any duplicate entries
-         */
-        if(!EchoDatabase.s.playListsStored){
-            favoriteContent!!.createPlaylistsTable()
-        }
+        favoriteContent= StaticMainActivity.favDatabase
+
         playlistsRecyclerView?.adapter=FavouriteAdapter(EchoDatabase.s.playLists,myActivity as Context)
         playlistsRecyclerView?.layoutManager=LinearLayoutManager(myActivity)
         playlistsRecyclerView?.itemAnimator=DefaultItemAnimator()

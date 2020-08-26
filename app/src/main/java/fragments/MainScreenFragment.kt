@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.internshala.echo.R
 import com.internshala.echo.Song
+import com.internshala.echo.activities.MainActivity.Statified as StaticMainActivity
 import com.internshala.echo.adapters.MainScreenAdapter
-import com.internshala.echo.databases.EchoDatabase
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,7 +43,6 @@ class MainScreenFragment : Fragment() {
     companion object {
         var songsList: ArrayList<Song>? = null
     }
-        var favDatabase:EchoDatabase?=null
 
     object Statified{
         var mediaPlayer:MediaPlayer?=null
@@ -78,12 +77,6 @@ class MainScreenFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         songsList= getSongs()
-        //Instantiating favorites database
-        favDatabase=PlayingSongsFragment.favoriteContent
-        if(favDatabase==null) {
-            favDatabase = EchoDatabase(myActivity)
-            favDatabase!!.createPlaylistsTable()
-        }
 
         if(songsList==null)
         {
@@ -93,7 +86,7 @@ class MainScreenFragment : Fragment() {
         else {
             mainScreenAdapter =
                 MainScreenAdapter(songsList as ArrayList<Song>, myActivity as Context,
-                    "fromMainScreen",favDatabase!!,null)
+                    "fromMainScreen",StaticMainActivity.favDatabase!!,null)
             val layout = LinearLayoutManager(myActivity)
             songsRecyclerView?.layoutManager = layout
             songsRecyclerView?.itemAnimator = DefaultItemAnimator()

@@ -26,6 +26,7 @@ import com.internshala.echo.CurrentSongHelper
 import com.internshala.echo.R
 import com.internshala.echo.Song
 import com.internshala.echo.activities.MainActivity
+import com.internshala.echo.activities.MainActivity.Statified as StaticMainActivity
 import com.internshala.echo.adapters.MainScreenAdapter
 import com.internshala.echo.adapters.QueueAdapter
 import com.internshala.echo.databases.EchoDatabase
@@ -124,6 +125,7 @@ class PlayingSongsFragment :androidx.fragment.app.Fragment() {
             currentSongHelper?.songTitle = nextSong?.songTitle
             currentSongHelper?.songArtist = nextSong?.songArtist
             currentSongHelper?.songId = nextSong?.songID as Long
+            currentSongHelper?.currentPosition= currentPosition
             updateTextViews(
                 currentSongHelper?.songTitle as String,
                 currentSongHelper?.songArtist as String,
@@ -201,6 +203,7 @@ class PlayingSongsFragment :androidx.fragment.app.Fragment() {
 
             //Setting text views of next and previous songs
             if(currentPosition==0){
+                nextImageButton?.isEnabled=true
                 previousImageButton?.isEnabled=false
                 previousImageButton?.alpha=0.5f
                 prevSongView?.visibility=View.INVISIBLE
@@ -209,6 +212,7 @@ class PlayingSongsFragment :androidx.fragment.app.Fragment() {
                     nextSongView?.text= fetchSongs?.get(currentPosition+1)?.songTitle
             }
             if(currentPosition== fetchSongs?.size?.minus(1)){
+                previousImageButton?.isEnabled=true
                 nextImageButton?.isEnabled=false
                 nextImageButton?.alpha=0.5f
                 nextSongView?.visibility=View.INVISIBLE
@@ -315,7 +319,7 @@ results*/
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 /*Initialising the database*/
-        favoriteContent = EchoDatabase(myActivity)
+        favoriteContent = StaticMainActivity.favDatabase
 
         if(!EchoDatabase.s.playListsStored){
             favoriteContent!!.createPlaylistsTable()
@@ -344,14 +348,8 @@ results*/
                 fromMainBottomBar=arguments?.getString("MainBottomBar")
 
             //If the control is not from the bottom bar,then the song will be the first in the queue
-                if(fromFavBottomBar!=null)
+                if(fromFavBottomBar!=null||fromMainBottomBar!=null)
                     currentPosition=arguments?.getInt("position") as Int
-
-                else if(fromMainBottomBar!=null){
-                    val positionInAllSongsList = arguments?.getInt("position") as Int
-                    val queueSongIDList=fetchSongs?.map { song-> song.songID }
-                    currentPosition=queueSongIDList?.indexOf(MainScreenFragment.songsList?.get(positionInAllSongsList)?.songID) as Int
-                }
                 else
                     currentPosition=0
 
@@ -474,6 +472,8 @@ used*/
                     playNext("PlayNextLikeNormalShuffle")
                 } else {
                     playNext("PlayNextNormal")
+                    currentSongHelper?.isLoop=false
+                    loopImageButton?.setBackgroundResource(R.drawable.loop_white_icon)
                 }
             }
         }

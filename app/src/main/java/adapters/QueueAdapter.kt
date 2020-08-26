@@ -1,6 +1,7 @@
 package com.internshala.echo.adapters
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,26 +54,40 @@ class QueueAdapter(list:ArrayList<Song>,context:Context) :RecyclerView.Adapter<Q
         val song=list?.get(position)
         holder.titleView?.setText(song?.songTitle)
         holder.artistView?.setText(song?.songArtist)
-        //Checking if the song is the one currently being played
-        if(song?.songID==currentSongHelper?.songId) {
+            if(song?.songID==currentSongHelper?.songId) {
 
-            holder.animation?.visibility=View.VISIBLE
+                holder.animation?.visibility=View.VISIBLE
 
-            if(currentSongHelper?.isPlaying as Boolean)
-            {
-                holder.animation?.playAnimation()
-                holder.animation?.loop(true)
+                if(currentSongHelper?.isPlaying as Boolean)
+                {
+                    holder.animation?.playAnimation()
+                    holder.animation?.loop(true)
+                }
+                PlayingSongsFragment.playPauseImageButton?.setOnClickListener {
+                    if (PlayingSongsFragment.Statified.mediaPlayer?.isPlaying as Boolean) {
+                        PlayingSongsFragment.Statified.mediaPlayer?.pause()
+                        PlayingSongsFragment.currentSongHelper?.isPlaying = false
+                        holder.animation?.pauseAnimation()
+                        PlayingSongsFragment.playPauseImageButton?.setBackgroundResource(R.drawable.play_icon2)
+                    } else {
+                        PlayingSongsFragment.Statified.mediaPlayer?.start()
+                        PlayingSongsFragment.currentSongHelper?.isPlaying = true
+                        holder.animation?.resumeAnimation()
+                        PlayingSongsFragment.playPauseImageButton?.setBackgroundResource(R.drawable.pause_icon)
+                    }
+                }
             }
-        }
+            else{
+                holder.animation?.cancelAnimation()
+                holder.animation?.visibility=View.INVISIBLE
+            }
         //Handling click event of song in queue
         holder.contentHolder?.setOnClickListener {
-            if(PlayingSongsFragment.currentSongHelper?.isLoop as Boolean)
-                MainScreenAdapter.makeToast("This song is on loop!",context)
-            else {
+                PlayingSongsFragment.currentSongHelper?.isLoop=false
+                PlayingSongsFragment.currentSongHelper?.isShuffle=false
                 PlayingSongsFragment.playRandomSong(song?.songID as Long)
                 holder.animation?.playAnimation()
-
-            }
+                holder.animation?.loop(true)
         }
     }
 }

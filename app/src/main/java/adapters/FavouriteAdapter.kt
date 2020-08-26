@@ -113,6 +113,9 @@ class FavouriteAdapter(playLists:ArrayList<String>, _context: Context):
                             notifyDataSetChanged()
                             MainScreenAdapter.makeToast("Playlist Deleted!",context)
                         }
+                        .setNegativeButton("No"){dialog, which ->
+                            dialog.dismiss()
+                        }
                 }
             }
             true
